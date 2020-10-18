@@ -1,16 +1,16 @@
 float dt;
 int sz = 2;
 int a = 100;
-float k = 31;
-float kv = 0.2;
+float k = 42;
+float kv = 0.31;
 int restLen = 100;
-float mass = 0.7;
+float mass = 0.6;
 float boxL = 50;
 Vec3 [][][] pos = new Vec3[sz][sz][sz];
 Vec3 vel[][][] = new Vec3[sz][sz][sz];
 Vec3 acc[][][] = new Vec3[sz][sz][sz];
 Vec3 cols[] = new Vec3[8];
-float COR2 = 0.2;
+float COR2 = 0.25;
 Vec3 gravity = new Vec3(0, 1200, 0);
 PImage img1;
 float rotx = PI/4;
@@ -18,7 +18,7 @@ float roty = PI/4;
 
 //Obstacle position & velocity
 float sphereR = 25;
-float COR = 0.985;
+float COR = 0.99;
 float diffDist;
 Vec3 obsVel;
 Vec3 obsPos;
@@ -57,7 +57,7 @@ boolean withinDist(){
   diffDist = max(max(sphereR -dist1, sphereR - dist2), max(sphereR - dist3, sphereR - dist4));
   if(diffDist > 0){
     int sign = (random(1) > 0.5 ? 1 : -1);
-    sphereAngDeltaY = random(0, PI/2);
+    sphereAngDeltaY = random(0, PI/4);
     sphereAngDeltaY = sphereAngDeltaY * sign;
     return true;
   }
@@ -151,7 +151,6 @@ void update(float dt){
         }
         if(i==0 && j==0 && k==0) {
           maxY = max(maxY, pos[i][j][k].y);
-          println(maxY);
         }
       }
     }
@@ -167,6 +166,7 @@ void mouseDragged() {
 void setup() {
   
   size(640,500,P3D);
+  camera = new Camera();
   img1 = loadImage("neon_slime.png");
   img2 = loadImage("pumpkin.png");
   fill(255);
@@ -199,6 +199,8 @@ void setup() {
 
 void draw() {
   update(dt);
+  for(int i=0;i<2;i++)
+    camera.Update(1.0/frameRate);
   background(0);
   noStroke();
   fill(0, 120, 50);
